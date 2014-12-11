@@ -1,0 +1,25 @@
+---
+# This playbook deploys the whole application stack in this site.  
+
+- name: Provision {{ application_name }} with Ansible
+  gather_facts: no
+  sudo: yes
+  sudo_user: root
+  remote_user: ubuntu
+  hosts: all
+
+  vars:
+    - application_name: 
+    - mysqlservice: mysql
+    - mysql_port: 3306
+    - dbuser: 
+    - upassword: 
+    - dbname:
+    - httpd_port: 80
+    - repository:
+    - update_apt_cache: yes
+
+  roles:
+    - web
+    - db
+

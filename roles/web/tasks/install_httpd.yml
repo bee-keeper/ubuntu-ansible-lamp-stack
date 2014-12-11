@@ -1,0 +1,35 @@
+---
+
+- name: Ensure OpenSSl and libssl are the latest versions
+  apt: name={{ item }} update_cache={{ update_apt_cache }} state=latest
+  with_items:
+   - openssl
+   - libssl-dev
+   - libssl-doc
+
+- name: Install http and php etc
+  apt: name={{ item }} state=installed update_cache={{ update_apt_cache }}
+  with_items:
+   - apache2
+   - git
+
+- name: Copy sites-available template
+  template: src=site-available.j2
+    dest=/etc/apache2/sites-available/{{ application_name }}.conf
+    backup=yes
+
+- name: Disable the default site
+  action: command a2dissite 000-default
+  tags:
+   - apache2
+
+- name: Enable our new site
+  action: command a2ensite {{ application_name }}
+  tags: common
+  tags:
+   - apache2
+
+- name: http service state
+  service: name=apache2 state=started enabled=yes
+  tags:
+   - apache2

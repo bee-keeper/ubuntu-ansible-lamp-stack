@@ -1,0 +1,12 @@
+---
+# These tasks are responsible for copying the latest dev/production code from
+# the version control system. 
+
+# create site dir
+- name: Create site directory
+  file: path=/var/www/{{ application_name}}
+    recurse=yes
+    state=directory
+
+- name: Copy the code from repository
+  git: repo={{ repository }} dest=/var/www/{{ application_name}} update=yes accept_hostkey=yes
