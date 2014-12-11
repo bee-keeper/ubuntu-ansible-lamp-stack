@@ -11,6 +11,8 @@
   apt: name={{ item }} state=installed update_cache={{ update_apt_cache }}
   with_items:
    - apache2
+   - php5
+   - libapache2-mod-php5
    - git
 
 - name: Copy sites-available template
